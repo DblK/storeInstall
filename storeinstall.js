@@ -30,7 +30,7 @@ THE SOFTWARE.
 				url = "https://addons.mozilla.org/en/firefox/addon/" + $(this).attr('data-name');
 			}else {
 				url = "https://chrome.google.com/webstore/detail/" + $(this).attr('data-name') + "/" + $(this).attr('data-id');
-			}			
+			}
 
 			makeButton(url, this, {
 				isChromeStore: $(this).attr('data-id') !== undefined ? true : false,
@@ -47,23 +47,23 @@ THE SOFTWARE.
 		$.getJSON("http://query.yahooapis.com/v1/public/yql?" +
 			"q=select%20*%20from%20html%20where%20url%3D%22" + encodeURIComponent(url) +
 			"%22&format=json'&callback=?",
-			function (data) {				
+			function (data) {
 				// Parse HTML Chrome page
 				var nbInstall = $('<div/>');
-				
+
 				var user = ""; // Number of installation
 				var name = ""; // Name of the extension
 				var img = "";  // Url of the image of the extension
 
-				if(options.isChromeStore) {					
+				if(options.isChromeStore) {
 					nbInstall.html(filterData(data.results[0]));
 					nbInstall.html(nbInstall.children('noscript').last().html());
 					nbInstall.html(nbInstall.text());
-				
-					user = $('span.webstore-wb-xb-mc', nbInstall).text();
+
+					user = $('span:contains(" users")', nbInstall).text();
 					user = user.substring(0, user.indexOf(' '));
-					name = $('h1.webstore-test-detail-dialog-title', nbInstall).text();
-					img = $('img.webstore-wb-xb-P', nbInstall).attr('src');
+					name = $('h1:first-child()', nbInstall).text();
+					img = $('img:first-child()', nbInstall).attr('src');
 				}else {
 					nbInstall.html(data.results[0]);
 					user = $('#daily-users', nbInstall).text().trim();
@@ -76,7 +76,7 @@ THE SOFTWARE.
 				$(nbInstall).html(user).css({
 					'font-size': '11px',
 					'font-family': 'Roboto, Arial',
-					'border': '1px solid #ccc',					
+					'border': '1px solid #ccc',
 					'min-width': '10px',
 					'background-color': '#fff',
 					'margin-left': '5px',
@@ -120,7 +120,7 @@ THE SOFTWARE.
 					annotation.text(name).css({
 						'font-size': '11px',
 						'font-family': 'Roboto, Arial',
-						'border': '1px solid #ccc',						
+						'border': '1px solid #ccc',
 						'min-width': '10px',
 						'background-color': '#fff',
 						'margin-left': '5px',
@@ -242,7 +242,7 @@ THE SOFTWARE.
 		data = data.replace(/<script.*\/>/,'');
 		return data;
 	}
-	
+
 	function trim() {
 		return this.replace(/^\s+|\s+$/g, '');
 	}
